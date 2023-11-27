@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="latin1" collation="latin1_swedish_ci">beauty</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="tblappointment" view="colnames">
+<left>232</left>
+<top>400</top>
+<width>126</width>
+<height>299</height>
+<sql_create_table>CREATE TABLE `tblappointment` (
+  `Appointment_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `AptNumber` varchar(80) DEFAULT NULL,
+  `Name` varchar(120) DEFAULT NULL,
+  `Email` varchar(120) DEFAULT NULL,
+  `PhoneNumber` bigint(11) DEFAULT NULL,
+  `Beautician` varchar(50) DEFAULT NULL,
+  `AptDate` varchar(120) DEFAULT NULL,
+  `AptTime` varchar(120) DEFAULT NULL,
+  `Services` varchar(120) DEFAULT NULL,
+  `ApplyDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `Remark` varchar(250) NOT NULL,
+  `Status` varchar(50) NOT NULL,
+  `RemarkDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Appointment_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblbeauticians" view="colnames">
+<left>1136</left>
+<top>72</top>
+<width>123</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `tblbeauticians` (
+  `Beautician_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(120) DEFAULT NULL,
+  `Phone` varchar(11) NOT NULL,
+  `Email` varchar(200) DEFAULT NULL,
+  `CreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Beautician_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblcustomers" view="colnames">
+<left>301</left>
+<top>77</top>
+<width>127</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `tblcustomers` (
+  `Customers_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(120) DEFAULT NULL,
+  `Email` varchar(200) DEFAULT NULL,
+  `MobileNumber` bigint(11) DEFAULT NULL,
+  `Gender` enum('Female','Male','Transgender') DEFAULT NULL,
+  `Details` mediumtext,
+  `CreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Customers_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblusers" view="colnames">
+<left>65</left>
+<top>422</top>
+<width>108</width>
+<height>265</height>
+<sql_create_table>CREATE TABLE `tblusers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `sex` varchar(255) NOT NULL,
+  `permission` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `mobile` int(11) NOT NULL,
+  `userimage` varchar(255) NOT NULL DEFAULT 'but.jpg',
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblservices" view="colnames">
+<left>965</left>
+<top>423</top>
+<width>122</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `tblservices` (
+  `Services_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ServiceName` varchar(200) DEFAULT NULL,
+  `Cost` int(10) DEFAULT NULL,
+  `CreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Services_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblinvoice" view="colnames">
+<left>556</left>
+<top>165</top>
+<width>129</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `tblinvoice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Services_ID` int(10) DEFAULT NULL,
+  `BillingId` int(11) DEFAULT NULL,
+  `invoicefrom` varchar(20) DEFAULT NULL,
+  `PostingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `Customers_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Customers_ID` (`Customers_ID`),
+  KEY `Services_Id` (`Services_ID`),
+  CONSTRAINT `tblinvoice_ibfk_1` FOREIGN KEY (`Customers_ID`) REFERENCES `tblcustomers` (`Customers_ID`),
+  CONSTRAINT `tblinvoice_ibfk_2` FOREIGN KEY (`Services_Id`) REFERENCES `tblservices` (`Services_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblbeautician_expertise" view="colnames">
+<left>752</left>
+<top>74</top>
+<width>186</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `tblbeautician_expertise` (
+  `Beautician_Expertise_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `Beautician_ID` int(10) DEFAULT NULL,
+  `Services_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Beautician_Expertise_ID`),
+  KEY `Beautician_ID` (`Beautician_ID`),
+  KEY `Services_ID` (`Services_ID`),
+  CONSTRAINT `tblbeautician_expertise_ibfk_1` FOREIGN KEY (`Beautician_ID`) REFERENCES `tblbeauticians` (`Beautician_ID`),
+  CONSTRAINT `tblbeautician_expertise_ibfk_2` FOREIGN KEY (`Services_ID`) REFERENCES `tblservices` (`Services_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tblinvoice_from_onlineappointment" view="colnames">
+<left>475</left>
+<top>480</top>
+<width>263</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `tblinvoice_from_onlineappointment` (
+  `tblinvoice_from_onlineappointment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `Services_ID` int(10) DEFAULT NULL,
+  `BillingId` int(11) DEFAULT NULL,
+  `invoicefrom` varchar(20) DEFAULT NULL,
+  `PostingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `Appointment_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`tblinvoice_from_onlineappointment_id`),
+  KEY `Services_ID` (`Services_ID`),
+  KEY `Appointment_ID` (`Appointment_ID`),
+  CONSTRAINT `tblinvoice_from_onlineappointment_ibfk_1` FOREIGN KEY (`Services_ID`) REFERENCES `tblservices` (`Services_ID`),
+  CONSTRAINT `tblinvoice_from_onlineappointment_ibfk_2` FOREIGN KEY (`Appointment_ID`) REFERENCES `tblappointment` (`Appointment_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
