@@ -73,7 +73,7 @@ if(isset($_POST['submit']))
 	<section class="ftco-section ftco-wrap-about ftco-no-pb ftco-no-pt">
 		<div class="container">
 			<div class="row no-gutters">
-				<div class="col-sm-12 p-4 p-md-5 d-flex align-items-center justify-content-center bg-primary">
+				<div style="background-color:#C8A07D"  class="col-sm-12 p-4 p-md-5 d-flex align-items-center justify-content-center">
 					<form action="#" method="post" class="appointment-form">
 						<h3 class="mb-3">Book your Service</h3>
 						<div class="row">
@@ -114,7 +114,7 @@ if(isset($_POST['submit']))
 										<div class="select-wrap">
 											<div class="icon"><span class="fa fa-chevron-down"></span></div>
 											<select name="services" id="services" class="form-control"required onchange="showUser(this.value)">
-												<option value="">Select Service</option>
+												<option style="color: black;" value="">Select Service</option>
 												<?php $query=mysqli_query($con,"select * from tblservices");
 												while($row=mysqli_fetch_array($query))
 												{

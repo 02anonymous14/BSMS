@@ -75,6 +75,13 @@ include('includes/dbconnection.php');
 						<th colspan="3" style="text-align:center">Grand Total</th>
 						<th><?php echo $gtotal?></th>
 					</tr>
+					<tr>  
+						<div> 
+							<th colspan="3" style="text-align:right">Tendered Amount:<br>Amount Due:<br>Change:</th>
+							<th id="payinfo"> 
+							</th> 
+						</div> 
+					</tr> 
 				</table>
 				<!-- <p style="margin-top:1%"  align="center">
 				<button class="btn-primary">Proceed to Payment</button>
@@ -96,7 +103,7 @@ include('includes/dbconnection.php');
 								<div class="col"> 
 
 									<label for="tenderbox">TENDER AMOUNT</label>
-									<input type="hidden" id="topay" value="<?= $gtotal;?>">
+									<input type="hidden" id="topay" value="<?= $gtotal  . ".00";?>">
 									<input style="height:50px;width:400px; font-size: 30px;" type="text" class="form-control text-end" id="tenderbox" name="tenderbox" placeholder="Enter Amount" required> 
 									
 								</div>
@@ -149,14 +156,6 @@ include('includes/dbconnection.php');
 										<div class="col">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-sm">
-											<label style="font-size: 50px;">Amount Due:</label> 
-										</div> 
-										<div class="col">
-										<label id="amountdue" style="font-size: 50px;"><?= $gtotal?></label> 
-									</div>
-
 									</div><div class="row">
 										<div class="col-sm">
 											<label style="font-size: 50px;">Tendered Amount:</label> 
@@ -164,6 +163,13 @@ include('includes/dbconnection.php');
 										<div class="col">
 										<label id="tenderlabel" style="font-size: 50px;"></label> 
 										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm">
+											<label style="font-size: 50px;">Amount Due:</label> 
+										</div> 
+										<div class="col">
+										<label id="amountdue" style="font-size: 50px;"><?= "₱ " . number_format($gtotal) . ".00"?></label> 
 									</div>
 <hr>
 									<div class="row">
@@ -272,24 +278,56 @@ include('includes/dbconnection.php');
     }
 
    $(document).ready(function(){
-      $(document).on('click','#paynow',function(){
+      	$(document).on('click','#paynow',function(){
 		
-		var amountdue = parseFloat(document.getElementById("topay").value);;
-		var textBoxValue = parseFloat(document.getElementById("tenderbox").value);
+			var amountdue = parseFloat(document.getElementById("topay").value);;
+			var textBoxValue = parseFloat(document.getElementById("tenderbox").value);
 
 		if (!isNaN(amountdue) && !isNaN(textBoxValue)) {
-			if (textBoxValue >= amountdue) {
-				document.getElementById("tenderlabel").textContent = textBoxValue;
+			if(textBoxValue >= amountdue){ 
 
 				var totalChange = textBoxValue - amountdue;
-				document.getElementById("totalchange").textContent = totalChange;
+
+				function addCommas(number) {
+					
+					var numStr = number.toString();
+
+					var parts = numStr.split('.');
+					var intPart = parts[0];
+					var decPart = parts.length > 1 ? '.' + parts[1] : '';
+
+					intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+					return intPart + decPart;
+				}
+
+				var tenderedamount = textBoxValue;
+				var change = totalChange;
+				var thisdue = amountdue;
+
+				var formatteddue = addCommas(thisdue);
+				var formattedtenderamount = addCommas(tenderedamount);
+				var formattedchange = addCommas(change);
+
+				var formattedText = "₱ " + formattedtenderamount + ".00" + "<br>" + "₱ " + formatteddue + ".00" + "<br>" + "₱ " + formattedchange + ".00";
+
+				var payinfoElement = document.getElementById("payinfo");
+
+				payinfoElement.innerHTML = formattedText;  
+
+				document.getElementById("tenderlabel").textContent = "₱ " + formattedtenderamount + ".00"; 
+
+				document.getElementById("totalchange").textContent = "₱ " + formattedchange  + ".00"; 
+
 				assignValue(); 
-			} else {
+
+			}else{
 				alert("Tendered Amount cannot be less than Amount Due!");
 			}
 		} else {
 			alert("Please enter valid numeric values.");
 		}
 	});
-    });
+});
+
 </script>

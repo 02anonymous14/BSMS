@@ -75,38 +75,44 @@ if (strlen($_SESSION['sid']==0)) {
                       <table id="example1" class="table table-bordered table-hover">
                         <tr>
                           <th>Appointment Number</th>
-                          <td><?php  echo $row['AptNumber'];?></td>
+                          <td><?= $row['AptNumber'];?></td>
                         </tr>
                         <tr>
                           <th>Name</th>
-                          <td><?php  echo $row['Name'];?></td>
+                          <td><?= $row['Name'];?></td>
                         </tr>
 
                         <tr>
                           <th>Email</th>
-                          <td><?php  echo $row['Email'];?></td>
+                          <td><?= $row['Email'];?></td>
                         </tr>
                         <tr>
                           <th>Mobile Number</th>
-                          <td><?php  echo $row['PhoneNumber'];?></td>
+                          <td><?= $row['PhoneNumber'];?></td>
                         </tr>
                         <tr>
                           <th>Appointment Date</th>
-                          <td><?php  echo $row['AptDate'];?></td>
+                          <td><?= $row['AptDate'];?></td>
                         </tr>
 
                         <tr>
                           <th>Appointment Time</th>
-                          <td><?php  echo $row['AptTime'];?></td>
+                          <td><?= $row['AptTime'];?></td>
                         </tr>
 
                         <tr>
                           <th>Services</th>
-                          <td><?php  echo $row['Services'];?></td>
+                          <td><?= $row['Services'];?></td>
                         </tr>
+
+                        <tr>
+                          <th>Beautician</th>
+                          <td><?= $row['Beautician'];?></td>
+                        </tr>
+
                         <tr>
                           <th>Apply Date</th>
-                          <td><?php  echo $row['ApplyDate'];?></td>
+                          <td><?= $row['ApplyDate'];?></td>
                         </tr>
                         <tr>
                           <th>Status</th>

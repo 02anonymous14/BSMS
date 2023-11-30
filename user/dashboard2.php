@@ -50,6 +50,7 @@ $sec = "5";
                       <th>Name</th>
                       <th>Appointment Date</th>
                       <th>Appointment Time</th>
+                      <th>Beautician</th>
                     
                     </tr> 
                   </thead> 
@@ -63,11 +64,12 @@ $sec = "5";
 
                       <tr> 
                         <th scope="row"><?php echo $cnt;?></th> 
-                        <td><?php  echo $row['Services'];?></td> 
-                        <td><?php  echo $row['Name'];?></td>
+                        <td><?= $row['Services'];?></td> 
+                        <td><?= $row['Name'];?></td>
                         
-                        <td><?php  echo $row['AptDate'];?></td> 
-                        <td><?php  echo $row['AptTime'];?></td> 
+                        <td><?= $row['AptDate'];?></td> 
+                        <td><?= $row['AptTime'];?></td> 
+                        <td><?= $row['Beautician'];?></td>
                             
                       </tr>   
                       <?php 

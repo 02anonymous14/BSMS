@@ -68,31 +68,35 @@ include('includes/dbconnection.php');
 						// JOIN `beautician_with_services` ON `beautician_with_services`.Services_ID=tblinvoice.Services_ID WHERE `beautician_with_services`.`Name` = tblinvoice.`beautician` AND tblinvoice.BillingId='$invid'");
 
 						$ret=mysqli_query($con,"SELECT * FROM `tblinvoice` WHERE tblinvoice.BillingId='$invid' ORDER BY `tblinvoice`.`beautician` ASC");
-					$cnt=1;
-					while ($row=mysqli_fetch_array($ret)) {
-						$serviesID = $row['Services_ID'];
-						$get=mysqli_query($con,"SELECT `ServiceName`, `Cost` FROM `tblservices` WHERE `Services_ID` = '$serviesID'");
-						$row1=mysqli_fetch_array($get)
-						?>
-						<tr>
-							<th><?php echo $cnt;?></th>
-							<td><?php echo $row['beautician']?></td>	
-							<td><?php echo $row1['ServiceName']?></td>	
-							<td><?php echo $subtotal=$row1['Cost']?></td>
-						</tr>
-						<?php 
-						$cnt=$cnt+1;
-						$gtotal+=$subtotal;
+						$cnt=1;
+						while ($row=mysqli_fetch_array($ret)) {
+							$serviesID = $row['Services_ID'];
+							$get=mysqli_query($con,"SELECT `ServiceName`, `Cost` FROM `tblservices` WHERE `Services_ID` = '$serviesID'");
+							$row1=mysqli_fetch_array($get)
+							?>
+							<tr>
+								<th><?php echo $cnt;?></th>
+								<td><?php echo $row['beautician']?></td>	
+								<td><?php echo $row1['ServiceName']?></td>	
+								<td><?php echo $subtotal=$row1['Cost']?></td>
+							</tr>
+							<?php 
+							$cnt=$cnt+1;
+							$gtotal+=$subtotal;
 
-					} 
-					 
+						}  
 					
 					?>
 					<tr>
 						<th colspan="3" style="text-align:center">Grand Total</th>
 						<th id="grandtotal"><?php echo $gtotal; ?></th>
 						
-					</tr>
+					</tr>  
+					<tr>
+						<th colspan="3" style="text-align:right">Tendered Amount:<br>Amount Due:<br>Change:</th>
+						<th id="payinfo"> 
+						</th> 
+					</tr> 
 				</table>
 
 				
@@ -181,22 +185,21 @@ include('includes/dbconnection.php');
 										<div class="col">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-sm">
-											<label style="font-size: 50px;">Amount Due:</label> 
-										</div> 
-										<div class="col">
-										<label id="amountdue" style="font-size: 50px;"><?= $gtotal?></label> 
-									</div>
-
 									</div><div class="row">
 										<div class="col-sm">
 											<label style="font-size: 50px;">Tendered Amount:</label> 
 										</div> 
 										<div class="col">
-										<label id="tenderlabel" style="font-size: 50px;"></label> 
+										<label id="tenderlabel" style="font-size: 50px;"></label>
 										</div>
 									</div>
+									<div class="row">
+										<div class="col-sm">
+											<label style="font-size: 50px;">Amount Due:</label> 
+										</div> 
+										<div class="col"> 
+										<label id="amountdue" style="font-size: 50px;"><?= "₱ " . number_format($gtotal) . ".00"?></label> 
+									</div> 
 <hr>
 									<div class="row">
 										<div class="col-sm">
@@ -309,12 +312,43 @@ include('includes/dbconnection.php');
 		var textBoxValue = parseFloat(document.getElementById("tenderbox").value);
 
 		if (!isNaN(amountdue) && !isNaN(textBoxValue)) {
-			if(textBoxValue >= amountdue){
-				document.getElementById("tenderlabel").textContent = textBoxValue;
+			if(textBoxValue >= amountdue){ 
 
 				var totalChange = textBoxValue - amountdue;
-				document.getElementById("totalchange").textContent = totalChange; 
-				assignValue(); 
+
+				function addCommas(number) {
+					
+					var numStr = number.toString();
+
+					var parts = numStr.split('.');
+					var intPart = parts[0];
+					var decPart = parts.length > 1 ? '.' + parts[1] : '';
+
+					intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+					return intPart + decPart;
+				}
+
+				var tenderedamount = textBoxValue;
+				var change = totalChange;
+				var thisdue = amountdue;
+
+				var formatteddue = addCommas(thisdue);
+				var formattedtenderamount = addCommas(tenderedamount);
+				var formattedchange = addCommas(change);
+
+				var formattedText = "₱ " + formattedtenderamount + ".00" + "<br>" + "₱ " + formatteddue + ".00" + "<br>" + "₱ " + formattedchange + ".00";
+
+				var payinfoElement = document.getElementById("payinfo");
+
+				payinfoElement.innerHTML = formattedText;  
+
+				document.getElementById("tenderlabel").textContent = "₱ " + formattedtenderamount + ".00"; 
+
+				document.getElementById("totalchange").textContent = "₱ " + formattedchange  + ".00"; 
+				 
+				assignValue();  
+				
 			}else{
 				alert("Tendered Amount cannot be less than Amount Due!");
 			}
