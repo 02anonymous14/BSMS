@@ -156,8 +156,8 @@ include('includes/dbconnection.php');
 										<div class="col">
 										</div>
 									</div>
-									</div>
-									</div><div class="row">
+									
+									<div class="row">
 										<div class="col-sm">
 											<label style="font-size: 50px;">Tendered Amount:</label> 
 										</div> 
@@ -180,7 +180,7 @@ include('includes/dbconnection.php');
 											<label style="font-size: 80px;">Change:</label> 
 										</div> 
 										<div class="col">
-										<label id="totalchange" style="font-size: 80px;"></label> 
+											<label id="totalchange" style="font-size: 80px;"></label> 
 										</div>
 									</div>
 									<!-- <div class="row">
