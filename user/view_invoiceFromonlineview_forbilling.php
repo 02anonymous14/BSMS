@@ -156,21 +156,24 @@ include('includes/dbconnection.php');
 										<div class="col">
 										</div>
 									</div>
+									</div>
 									</div><div class="row">
 										<div class="col-sm">
 											<label style="font-size: 50px;">Tendered Amount:</label> 
 										</div> 
 										<div class="col">
-										<label id="tenderlabel" style="font-size: 50px;"></label> 
+											<label id="tenderlabel" style="font-size: 50px;"></label>
 										</div>
 									</div>
+									
 									<div class="row">
 										<div class="col-sm">
 											<label style="font-size: 50px;">Amount Due:</label> 
 										</div> 
-										<div class="col">
-										<label id="amountdue" style="font-size: 50px;"><?= "₱ " . number_format($gtotal) . ".00"?></label> 
-									</div>
+										<div class="col"> 
+											<label id="amountdue" style="font-size: 50px;"><?= "₱ " . number_format($gtotal) . ".00"?></label> 
+										</div> 
+									</div> 
 <hr>
 									<div class="row">
 										<div class="col-sm">

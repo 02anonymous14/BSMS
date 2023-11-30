@@ -11,15 +11,50 @@ if (strlen($_SESSION['sid']==0)) {
     $cid=$_GET['viewid'];
     $remark=$_POST['remark'];
     $status=$_POST['status'];
-    $query=mysqli_query($con, "update  tblappointment set Remark='$remark',Status='$status' where Appointment_ID='$cid'");
-    if ($query) {
-      echo "<script>alert('Updated Successfuly');</script>"; 
-      echo "<script>window.location.href = 'view-appointment.php'</script>";
-    }
-    else
-    {
-      echo "<script>alert('Something Went Wrong. Please try again.');</script>";   
-    }
+
+    
+  $beautician=$_POST['beautician'];
+
+  $invoiceid=mt_rand(100000000, 999999999); 
+  
+  $getapp=mysqli_query($con,"SELECT `Beautician`,`Services` FROM `tblappointment` where Appointment_ID='$cid'");
+  $getappservice=mysqli_fetch_array($getapp);
+  $clientservice = $getappservice['Services']; 
+  $selectedbeautician = $getappservice['Beautician']; 
+
+  $srvicesID = mysqli_query($con, "SELECT `Services_ID` FROM `tblservices` WHERE `ServiceName`= '$clientservice'");  
+  $getserviceID = mysqli_fetch_array($srvicesID);
+  $resServiceID = $getserviceID['Services_ID'];
+
+    if($_POST['status'] == '2'){
+
+      $query=mysqli_query($con, "update tblappointment set Remark='$remark',Status='$status',Beautician='$beautician' where Appointment_ID='$cid'");
+      if ($query){
+
+        echo "<script>alert('Updated Successfuly');</script>"; 
+        echo "<script>window.location.href = 'new_appointment.php'</script>";
+
+      }else{
+
+        echo "<script>alert('Something Went Wrong. Please try again.');</script>";
+
+      }
+      
+    }elseif($_POST['status'] == '1'){
+      $query=mysqli_query($con, "update tblappointment set Remark='$remark',Status='$status' where Appointment_ID='$cid'");
+      $query1=mysqli_query($con,"INSERT INTO tblinvoice_from_onlineappointment(beautician, Services_ID,BillingId,invoicefrom,Appointment_ID,Paymentstatus) VALUES('$selectedbeautician','$resServiceID','$invoiceid','ONLINE APPOINTMENT','$cid','UNPAID');");
+
+      if ($query && $query1){
+
+        echo "<script>alert('Updated Successfuly');</script>"; 
+        echo "<script>window.location.href = 'new_appointment.php'</script>";
+
+      }else{
+
+        echo "<script>alert('Something Went Wrong. Please try again.');</script>";
+
+      }
+    } 
   }
   ?>
   <!DOCTYPE html>
