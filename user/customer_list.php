@@ -19,6 +19,7 @@ if(isset($_POST[('delete')])){
     echo "<script>alert('Something Went Wrong. Please try again.');</script>";    
   } 
 }
+ 
 
 ?>
 
@@ -106,51 +107,20 @@ if(isset($_POST[('delete')])){
                </div>
                <!--   end modal -->
                <div class="card-body">
-                <table id="example1" class="table table-bordered table-hover">
-                  <thead> 
-                    <tr> 
-                      <th>#</th> 
-                      <th>Name</th> 
-                      <th>Mobile</th> 
-                      <th>Creation Date</th>
-                      <th>Action</th> 
-                    </tr> 
-                  </thead> 
-                  <tbody>
-                    <?php
-                    $ret=mysqli_query($con,"select *from  tblcustomers");
-                    $cnt=1;
-                    while ($row=mysqli_fetch_array($ret)) {
 
-                      ?>
+                  <table id="dataTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                              <th>#</th> 
+                              <th>Name</th> 
+                              <th>Mobile</th> 
+                              <th>Creation Date</th>
+                              <th>Action</th> 
+                            </tr>
+                        </thead>
+                    </table>
+                  </table> 
 
-                        <tr> 
-                          <th scope="row"><?php echo $cnt;?></th> 
-                          <td><?php  echo $row['Name'];?></td> 
-                          <td><?php  echo $row['MobileNumber'];?></td>
-                          <td><?php  echo $row['CreationDate'];?></td> 
-                          <td> 
-
-                            <div class="row">
-                              <div class="col-1">
-                                <a href="#" class=" btn btn-sm btn-primary edit_data" id="<?php echo  $row['Customers_ID']; ?>" title="click for edit">Edit</a>
-                              </div>
-                              <div class="">
-                                <form method="post">
-                                  <input type="hidden" name="deletethisid" value="<?php echo $row['Customers_ID']; ?>">
-                                  <input type="submit" name="delete" class="ml-1 btn btn-sm btn-danger" value="Delete">
-                                </form>
-                                </div>
-                                <div class="col  pl3">
-                                  <a href="#" class=" btn btn-sm btn-info edit_data2" id="<?php echo  $row['Customers_ID']; ?>" title="assign services">Assign Services</a></td> 
-                                </div>
-                            </div>
-                        </tr>
-                        <?php 
-                        $cnt=$cnt+1;
-                      }?>
-                    </tbody>
-                  </table>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -177,6 +147,8 @@ if(isset($_POST[('delete')])){
   <!-- ./wrapper -->
   <?php @include("includes/foot.php"); ?>
   <script type="text/javascript">
+ 
+
     $(document).ready(function(){
       $(document).on('click','.edit_data',function(){
         var edit_id=$(this).attr('id');
@@ -190,8 +162,27 @@ if(isset($_POST[('delete')])){
           }
         });
       });
+ 
+      $('#dataTable').DataTable({
+        ajax: {
+            url: 'ajax_handler_for_walkin.php',
+            type: 'GET',       
+            dataSrc: 'data'  
+        },
+        columns: [
+            { data: '#' },
+            { data: 'Name' },
+            { data: 'Mobile' },
+            { data: 'Creation Date' },
+            { data: 'action' } 
+        ]
+      });
+ 
+
     });
+
   </script>
+
   <script type="text/javascript">
     $(document).ready(function(){
       $(document).on('click','.edit_data2',function(){
@@ -207,6 +198,7 @@ if(isset($_POST[('delete')])){
         });
       });
     });
+
   </script>
  
 </body>

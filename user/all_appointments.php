@@ -81,48 +81,25 @@ if(isset($_POST[('delete')])){
                 </div>
                 <!--   end modal -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-hover">
-                    <thead> 
-                      <tr> 
-                        <th>#</th> 
-                        <th> Appointment Number</th> 
-                        <th>Name</th><th>Mobile Number</th> 
-                        <th>Appointment Date</th>
-                        <th>Appointment Time</th>
-                        <th>Action</th> 
-                      </tr> 
-                    </thead> 
-                    <tbody>
-                      <?php
-                      $ret=mysqli_query($con,"select *from  tblappointment");
-                      $cnt=1;
-                      while ($row=mysqli_fetch_array($ret)) {
+                  
 
-                        ?>
 
-                        <tr> 
-                          <th scope="row"><?php echo $cnt;?></th> 
-                          <td><?php  echo $row['AptNumber'];?></td> 
-                          <td><?php  echo $row['Name'];?></td>
-                          <td><?php  echo $row['PhoneNumber'];?></td>
-                          <td><?php  echo $row['AptDate'];?></td> 
-                          <td><?php  echo $row['AptTime'];?></td> 
-                          <td>
-                            <div class="row"> 
-                              <a href="#" class=" edit_data" id="<?php echo  $row['Appointment_ID']; ?>" title="click for edit">View</a>
-                                <form method="post">
-                                  <input type="hidden" name="deletethisid" value="<?php echo $row['Appointment_ID']; ?>">
-                                  <input type="submit" name="delete" class="ml-3 btn btn-sm btn-danger" value="Delete">
-                                </form> 
-                            </div> 
-                          </td>   
-                        </tr>   
-                        <?php 
-                        $cnt=$cnt+1;
-                      }?>
-                    </tbody>
-                  </table>
-                </div>
+                  <table id="dataTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                              <th>#</th> 
+                              <th> Appointment Number</th> 
+                              <th>Name</th><th>Mobile Number</th> 
+                              <th>Appointment Date</th>
+                              <th>Appointment Time</th>
+                              <th>Action</th> 
+                            </tr>
+                        </thead> 
+                    </table>
+                  </table> 
+
+
+                  </div>
                 <!-- /.card-body -->
               </div>
               <!-- /.card -->
@@ -161,6 +138,26 @@ if(isset($_POST[('delete')])){
           }
         });
       });
+
+
+      $('#dataTable').DataTable({
+        ajax: {
+            url: 'ajax_handler_for_appointment.php',
+            type: 'GET',       
+            dataSrc: 'data'  
+        },
+        columns: [
+            { data: '#' },
+            { data: 'AptNumber' },
+            { data: 'Name' },
+            { data: 'PhoneNumber' },
+            { data: 'AptDate' },
+            { data: 'AptTime' },
+            { data: 'action' } 
+        ]
+      });
+
+
     });
   </script>
 </body>

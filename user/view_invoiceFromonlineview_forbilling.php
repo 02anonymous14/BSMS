@@ -280,10 +280,10 @@ include('includes/dbconnection.php');
         xhr.send(JSON.stringify(updatedData));
     }
 
-   $(document).ready(function(){
+   	$(document).ready(function(){
       	$(document).on('click','#paynow',function(){
 		
-			var amountdue = parseFloat(document.getElementById("topay").value);;
+			var amountdue = parseFloat(document.getElementById("topay").value);
 			var textBoxValue = parseFloat(document.getElementById("tenderbox").value);
 
 		if (!isNaN(amountdue) && !isNaN(textBoxValue)) {

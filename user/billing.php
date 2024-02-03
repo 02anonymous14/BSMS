@@ -93,10 +93,8 @@ if(isset($_POST[('delete')])){
                                     </div>
                                     <div class="col">
                                     </div>
-                                </div>
-                                
-                            </div>
-                        
+                                </div> 
+                            </div> 
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -104,14 +102,6 @@ if(isset($_POST[('delete')])){
                 </div>
                 <!-- /.col -->
             </div>
-
-
-
-
-
-
-
-            
 
 
             <div class="row">

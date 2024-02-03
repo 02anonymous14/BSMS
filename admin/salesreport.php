@@ -128,14 +128,20 @@ if (strlen($_SESSION['sid']==0)) {
                                         <tbody>
                                         <?php 
                                         
-                                        $from = $_GET['from'];
-                                        $to = $_GET['to']; 
+                                        if (isset($_GET['from'])) {
+                                            $from = $_GET['from'];
+                                        } else {
+                                            $from = '';
+                                        }
+                                        
+                                        if (isset($_GET['to'])) {
+                                            $to = $_GET['to'];
+                                        } else {
+                                            $to = '';
+                                        }
 
+                                        $query=mysqli_query($con,"SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from' AND '$to'");
 
-                                            $query=mysqli_query($con,"SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from' AND '$to'");
-												
-
-                                                
                                         // $sql = "SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from' AND '$to'";
                                         // $stmt = $con->prepare($sql);
                                         // $stmt->execute();
@@ -144,13 +150,13 @@ if (strlen($_SESSION['sid']==0)) {
     
                                         $total = [
                                         'total' => 0, 
-                                        'totaltaka' => 0,
+                                        'totalsales' => 0,
                                         ];
                                         $index = 0;
                                                 while($row=mysqli_fetch_array($query))
                                                 {
                                                     $total = [
-                                                    'totaltaka' => $total['totaltaka'] + $row['Cost'],
+                                                    'totalsales' => $total['totalsales'] + $row['Cost'],
                                                     ];
                                                     echo '<tr>';
                                                     echo '<td align= center>' . ($index = $index + 1) . '</td>';
@@ -163,7 +169,7 @@ if (strlen($_SESSION['sid']==0)) {
                                                 }
                                         echo '<tr align= center>';
                                         echo '<th colspan="5" style="text-align: right;">Grand Total</th>';
-                                        echo '<td ><b>' . $total['totaltaka'] . '</b></td>';
+                                        echo '<td ><b>' . $total['totalsales'] . '</b></td>';
                                         echo '</tr>';
                                          
                                         ?>
