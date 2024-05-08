@@ -82,7 +82,24 @@ if(isset($_POST[('delete')])){
                </div>
                <!--   end modal -->
                <div class="card-body">
-                <table id="example1" class="table table-bordered table-hover">
+
+
+                <table id="dataTable" class="table table-bordered table-hover">
+                      <thead>
+                          <tr>
+                            <th>#</th> 
+                            <th> Appointment Number</th> 
+                            <th>Name</th><th>Mobile Number</th> 
+                            <th>Appointment Date</th>
+                            <th>Appointment Time</th>
+                            <th>Action</th> 
+                          </tr>
+                      </thead> 
+                  </table>
+                </table> 
+
+
+                <!-- <table id="example1" class="table table-bordered table-hover">
                   <thead> 
                     <tr> 
                       <th>#</th> 
@@ -122,7 +139,7 @@ if(isset($_POST[('delete')])){
                       $cnt=$cnt+1;
                     }?>
                   </tbody>
-                </table>
+                </table> -->
               </div>
               <!-- /.card-body -->
             </div>
@@ -162,6 +179,23 @@ if(isset($_POST[('delete')])){
         }
       });
     });
+
+    $('#dataTable').DataTable({
+        ajax: {
+            url: 'ajax_handler_for_new_appointment.php',
+            type: 'GET',       
+            dataSrc: 'data'  
+        },
+        columns: [
+            { data: '#' },
+            { data: 'AptNumber' },
+            { data: 'Name' },
+            { data: 'PhoneNumber' },
+            { data: 'AptDate' },
+            { data: 'AptTime' },
+            { data: 'action' } 
+        ]
+      });
   });
 </script>
 </body>

@@ -9,21 +9,25 @@ if (strlen($_SESSION['sid']==0)) {
   $newdatefrom  = '';
   $dateto = '';
   $newdateto = '';
+  $beautician = '';
 
   if (!empty($_GET['from']) && !empty($_GET['to'])) {
           
     $datefrom = '';
     $newdatefrom  = '';
     $dateto = '';
-    $newdateto = '';
+    $newdateto = ''; 
+    $newbeautician = '';
 
     if (!empty($_GET['from']) && !empty($_GET['to'])) {
             
         $datefrom = $_GET['from'];
         $dateto = $_GET['to'];
+        $newbeautician = $_GET['beautican'];
 
         $newdatefrom = $datefrom.' '.'00:00:00';
         $newdateto = $dateto.' '.'23:59:59';
+        $newbeautician = '';
         
     }
     
@@ -83,13 +87,28 @@ if (strlen($_SESSION['sid']==0)) {
                             <form class="myForm" method="get" enctype="application/x-www-form-urlencoded" action="salesreport.php">
                             
                                 <div class="form-row" align="left">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label>From Date:</label>
-                                        <input type="date" class="datepicker btn-block"  name="from" id="fromDate" Placeholder="Select From Date" value="<?php echo isset($_GET['from']) ? $_GET['from'] : '' ?>">
+                                        <input type="date" class="form-control datepicker btn-block"  name="from" id="fromDate" Placeholder="Select From Date" value="<?php echo isset($_GET['from']) ? $_GET['from'] : '' ?>">
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label>To Date:  </label>
-                                        <input type="date" name="to" id="toDate" class="datepicker btn-block"  Placeholder="Select To Date" value="<?php echo isset($_GET['to']) ? $_GET['to'] : '' ?>">
+                                        <input type="date" name="to" id="toDate" class="form-control datepicker btn-block"  Placeholder="Select To Date" value="<?php echo isset($_GET['to']) ? $_GET['to'] : '' ?>">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>Beautician:  </label>
+                                        <select name="beautican" id="beautican" class="form-control">
+												<option style="color: black;" value="">Select Beautician</option>
+												<?php 
+                                                    $query=mysqli_query($con,"select * from tblbeauticians");
+                                                    while($row=mysqli_fetch_array($query))
+                                                    {
+                                                ?>
+													    <option style="color: black;" value="<?php echo $row['Name'];?>" ><?php echo $row['Name'];?></option>
+                                                <?php
+												    } 
+                                                ?> 
+											</select>
                                     </div>
 
                                     <div class="form-group col-md-2 pt-4 mt-2">
@@ -107,77 +126,95 @@ if (strlen($_SESSION['sid']==0)) {
                             </form>
                         
                             <br>
-                            <style type="text/css">
+                                <style type="text/css">
                                 @media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0px;}}</style>
                                 <div class="tg-wrap">
-                                    <div class="tables" id="exampl">
-                                        <table id="table" class="display" cellspacing="0" style="width:100%" border="1">
-                                        <thead style="font: bold; active" align="center">
-                                        <h4 style="color:red">Total Sales from : <?php if(!empty($_GET['from'])){echo ( date('F d, Y', strtotime($_GET['from'])));} if(!empty($_GET['from'])){ echo (' to');}?> <?php if(!empty($_GET['from'])){echo (date('F d, Y', strtotime($_GET['to'])));} ?> </h4>
-                                        </thead>
-                                        <thead style="font: bold; active" align="center">
-                                        <tr>
-                                        <td>No.</td>
-                                        <td align= center>Billing Id</td>
-                                        <td align= center>Posting Date</td>
-                                        <td align= center>Client Type</td>
-                                        <td align= center>Services</td>
-                                        <td align= center>Amount</td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php 
-                                        
-                                        if (isset($_GET['from'])) {
-                                            $from = $_GET['from'];
-                                        } else {
-                                            $from = '';
-                                        }
-                                        
-                                        if (isset($_GET['to'])) {
-                                            $to = $_GET['to'];
-                                        } else {
-                                            $to = '';
-                                        }
+                                    <div class="tables" id="exampl"> 
+                                        <table id="table" class="display" cellspacing="0" style="width:100%" border="1"> 
+                                            <thead style="font: bold; active" align="center"><tr>
+                                                <center>
+                                                <img style="width: 3in; height: 1in;" src="../images/salonlogo1.png" alt="">
+                                                <h4 style="color:red">Total Sales from : <?php if(!empty($_GET['from'])){echo ( date('F d, Y', strtotime($_GET['from'])));} if(!empty($_GET['from'])){ echo (' to');}?> <?php if(!empty($_GET['from'])){echo (date('F d, Y', strtotime($_GET['to'])));} ?> </h4>
+                                                </center>
+                                                </tr>
+                                                
 
-                                        $query=mysqli_query($con,"SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from' AND '$to'");
-
-                                        // $sql = "SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from' AND '$to'";
-                                        // $stmt = $con->prepare($sql);
-                                        // $stmt->execute();
-                                        // $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                        
-    
-                                        $total = [
-                                        'total' => 0, 
-                                        'totalsales' => 0,
-                                        ];
-                                        $index = 0;
-                                                while($row=mysqli_fetch_array($query))
-                                                {
-                                                    $total = [
-                                                    'totalsales' => $total['totalsales'] + $row['Cost'],
-                                                    ];
-                                                    echo '<tr>';
-                                                    echo '<td align= center>' . ($index = $index + 1) . '</td>';
-                                                        echo '<td align= center>' . $row['BillingId'] . '</td>';
-                                                    echo '<td align= center>' . $row['PostingDate'] . '</td>';
-                                                    echo '<td align= center>' . $row['invoicefrom'] . '</td>';
-                                                    echo '<td align= center>' . $row['ServiceName'] . '</td>';
-                                                    echo '<td align= center>' . $row['Cost'] . '</td>'; 
-                                                    echo '</tr>';
+                                                <tr>
+                                                    <td>No.</td>
+                                                    <td align= center>Billing Id</td>
+                                                    <td align= center>Posting Date</td>
+                                                    <td align= center>Client Type</td>
+                                                    <td align= center>Beautician</td>
+                                                    <td align= center>Services</td>
+                                                    <td align= center>Amount</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                
+                                                if (isset($_GET['from'])) {
+                                                    $from = $_GET['from'];
+                                                } else {
+                                                    $from = '';
                                                 }
-                                        echo '<tr align= center>';
-                                        echo '<th colspan="5" style="text-align: right;">Grand Total</th>';
-                                        echo '<td ><b>' . $total['totalsales'] . '</b></td>';
-                                        echo '</tr>';
-                                         
-                                        ?>
-                                        </tbody>
-                                    </table>
+                                                
+                                                if (isset($_GET['to'])) {
+                                                    $to = $_GET['to'];
+                                                } else {
+                                                    $to = '';
+                                                }
+
+                                                if (isset($_GET['beautican'])) {
+                                                    $beautican = $_GET['beautican']; 
+                                                } else {
+                                                    $beautican = '';
+                                                     
+                                                }
+                                                
+                                                if( !empty($beautican)){ 
+                                                    $query = mysqli_query($con, "SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from 00:00:00' AND '$to 23:59:00'AND Beautician = '$beautican'");
+                                                }else{ 
+                                                    $query = mysqli_query($con, "SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from 00:00:00' AND '$to 23:59:00'");
+                                                }
+                                                
+                                                
+                                                 // $sql = "SELECT * FROM AllSales WHERE PostingDate BETWEEN '$from' AND '$to'";
+                                                // $stmt = $con->prepare($sql);
+                                                // $stmt->execute();
+                                                // $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                
+            
+                                                $total = [
+                                                'total' => 0, 
+                                                'totalsales' => 0,
+                                                ];
+                                                $index = 0;
+                                                    while($row=mysqli_fetch_array($query))
+                                                    {
+                                                        $total = [
+                                                        'totalsales' => $total['totalsales'] + $row['Cost'],
+                                                        ];
+                                                        echo '<tr>';
+                                                        echo '<td align= center>' . ($index = $index + 1) . '</td>';
+                                                            echo '<td align= center>' . $row['BillingId'] . '</td>';
+                                                        echo '<td align= center>' . $row['PostingDate'] . '</td>';
+                                                        echo '<td align= center>' . $row['invoicefrom'] . '</td>';
+                                                        echo '<td align= center>' . $row['Beautician'] . '</td>';
+                                                        echo '<td align= center>' . $row['ServiceName'] . '</td>';
+                                                        echo '<td align= center>' . $row['Cost'] . '</td>'; 
+                                                        echo '</tr>';
+                                                    }
+                                                echo '<tr align= center>';
+                                                echo '<th colspan="6" style="text-align: right;">Grand Total</th>';
+                                                echo '<td ><b>' . $total['totalsales'] . '</b></td>';
+                                                echo '</tr>';
+                                                
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- </div> -->
+                                <!-- </div> -->
 
 
         

@@ -59,8 +59,6 @@ if(isset($_POST['submit']))
         <div class="form-group">
           <label for="exampleInputPassword1">Department</label>
           <select class="form-control" id="Expertise" name="bexpertise" >
-            
-            
 
             <?php 
               $allservices = mysqli_query($con,"SELECT DISTINCT Category FROM tblservices");

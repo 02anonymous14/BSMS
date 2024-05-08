@@ -135,7 +135,7 @@ if(isset($_POST['submit']))
 									<div class="form-field">
 										<div class="select-wrap">
 											<div class="icon"><span class="fa fa-chevron-down"></span></div>
-											<select name="services" id="services" class="form-control"required onchange="showUser(this.value)">
+											<select name="services" id="services" class="form-control" required onchange="showUser(this.value)">
 												<option style="color: black;" value="">Select Service</option>
 												<?php $query=mysqli_query($con,"select * from tblservices");
 												while($row=mysqli_fetch_array($query))

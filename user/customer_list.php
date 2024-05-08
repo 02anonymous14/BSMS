@@ -163,11 +163,17 @@ if(isset($_POST[('delete')])){
         });
       });
  
-      $('#dataTable').DataTable({
-        ajax: {
-            url: 'ajax_handler_for_walkin.php',
-            type: 'GET',       
-            dataSrc: 'data'  
+    $('#dataTable').DataTable({
+        ajax: async function(data, callback) {
+            try {
+                const response = await fetch('ajax_handler_for_walkin.php');
+                const data = await response.json();
+                callback({
+                    data: data.data
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         },
         columns: [
             { data: '#' },
@@ -176,7 +182,23 @@ if(isset($_POST[('delete')])){
             { data: 'Creation Date' },
             { data: 'action' } 
         ]
-      });
+    });
+
+
+      // $('#dataTable').DataTable({
+      //   ajax: {
+      //       url: 'ajax_handler_for_walkin.php',
+      //       type: 'GET',       
+      //       dataSrc: 'data'  
+      //   },
+      //   columns: [
+      //       { data: '#' },
+      //       { data: 'Name' },
+      //       { data: 'Mobile' },
+      //       { data: 'Creation Date' },
+      //       { data: 'action' } 
+      //   ]
+      // });
  
 
     });
